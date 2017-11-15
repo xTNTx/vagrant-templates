@@ -14,7 +14,9 @@ ln -sf /usr/share/zoneinfo/UTC /etc/localtime
 echo "Adding repos"
 add-apt-repository ppa:ondrej/php -y
 add-apt-repository ppa:nginx/stable -y
-#
+apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 5072E1F5
+echo "deb http://repo.mysql.com/apt/ubuntu/ trusty mysql-5.7" | tee -a /etc/apt/sources.list.d/mysql.list
+
 echo "Updating repo and packages ..."
 apt-get update && apt-get upgrade -y
 
@@ -30,7 +32,7 @@ service nginx restart
 usermod -a -G www-data vagrant
 
 echo "Installing PHP and Ko ..."
-apt-get install -y php7.1-fpm php-mcrypt php-curl php-gd php-mbstring php-xdebug php-mysql
+apt-get install -y php7.1-fpm php7.1-mcrypt php7.1-curl php7.1-gd php7.1-mbstring php7.1-xdebug php7.1-mysql php7.1-xml
 
 echo "Configuring PHP ..."
 sed -i "s/user = www-data/user = vagrant/" /etc/php/7.1/fpm/pool.d/www.conf
@@ -61,16 +63,13 @@ xdebug.remote_port = 9000
 service php7.1-fpm restart
 
 echo "Installing MySQL ..."
-apt-get install debconf-utils
-debconf-set-selections <<< "mysql-server mysql-server/root_password password 123456"
-debconf-set-selections <<< "mysql-server mysql-server/root_password_again password 123456"
 apt-get install -y mysql-server
 
 echo "Configuring MySQL ..."
-mysql -u root -p123456 -e "UPDATE mysql.user SET Password = '' WHERE User = 'root'; FLUSH PRIVILEGES;"
+mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';"
 mysql -e "CREATE USER 'root'@'%'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;"
 mysql -e "CREATE USER 'vagrant'@'localhost'; GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'localhost' WITH GRANT OPTION;"
-sed -i 's/bind-address/# bind-address/' /etc/mysql/my.cnf
+sed -i 's/bind-address/# bind-address/' /etc/mysql/mysql.conf.d/mysqld.cnf
 service mysql restart
 #mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql mysql
 
