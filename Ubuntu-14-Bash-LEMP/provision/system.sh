@@ -62,6 +62,8 @@ xdebug.remote_port = 9000
 " >> /etc/php/7.1/fpm/conf.d/20-xdebug.ini
 service php7.1-fpm restart
 
+curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 echo "Installing MySQL ..."
 apt-get install -y mysql-server
 

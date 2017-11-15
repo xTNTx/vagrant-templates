@@ -58,3 +58,11 @@ mysql -e "CREATE DATABASE \`$PROJECT\`;"
 if [ -f /vagrant/dump.sql ]; then
     mysql $PROJECT < /vagrant/dump.sql
 fi
+
+echo "Setup project ..."
+if [ -f /vagrant/composer.json ]; then
+    su -l vagrant -c "composer install --no-interaction --no-progress --working-dir=/vagrant"
+fi
+if [ -f /vagrant/artisan ]; then
+    su -l vagrant -c "cd /vagrant && php artisan migrate"
+fi
