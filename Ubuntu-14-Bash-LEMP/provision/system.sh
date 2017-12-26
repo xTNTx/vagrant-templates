@@ -7,8 +7,7 @@ export LANGUAGE="en_US.UTF-8"
 echo 'LANGUAGE="en_US.UTF-8"' >> /etc/default/locale
 echo 'LC_ALL="en_US.UTF-8"' >> /etc/default/locale
 
-echo "Installing basic tools ..."
-apt-get install -y mc git vim python-software-properties
+echo "Configuring system ..."
 ln -sf /usr/share/zoneinfo/UTC /etc/localtime
 
 echo "Adding repos"
@@ -19,6 +18,9 @@ echo "deb http://repo.mysql.com/apt/ubuntu/ trusty mysql-5.7" | tee -a /etc/apt/
 
 echo "Updating repo and packages ..."
 apt-get update && apt-get upgrade -y
+
+echo "Installing basic tools ..."
+apt-get install -y mc git vim python-software-properties
 
 echo "Installing Nginx ..."
 apt-get install -y nginx
