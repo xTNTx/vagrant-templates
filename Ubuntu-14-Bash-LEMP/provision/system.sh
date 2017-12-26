@@ -75,5 +75,9 @@ sed -i 's/bind-address/# bind-address/' /etc/mysql/mysql.conf.d/mysqld.cnf
 service mysql restart
 #mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql mysql
 
+echo "Installing NodeJS ..."
+curl -sL https://deb.nodesource.com/setup_8.x | bash -
+apt-get install -y nodejs
+
 echo "Installing iTerm2 integration ..."
 curl -L https://iterm2.com/misc/install_shell_integration.sh | bash
