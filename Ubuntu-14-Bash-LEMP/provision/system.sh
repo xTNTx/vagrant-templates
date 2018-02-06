@@ -34,7 +34,7 @@ service nginx restart
 usermod -a -G www-data vagrant
 
 echo "Installing PHP and Ko ..."
-apt-get install -y php7.1-fpm php7.1-mcrypt php7.1-curl php7.1-gd php7.1-mbstring php7.1-xdebug php7.1-mysql php7.1-xml
+apt-get install -y php7.1-fpm php7.1-mcrypt php7.1-curl php7.1-gd php7.1-mbstring php7.1-xdebug php7.1-mysql php7.1-sqlite3 php7.1-xml
 
 echo "Configuring PHP ..."
 sed -i "s/user = www-data/user = vagrant/" /etc/php/7.1/fpm/pool.d/www.conf
